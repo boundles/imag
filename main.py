@@ -1,20 +1,14 @@
 # Chatbot demo with multimodal input (text, markdown, LaTeX, code blocks, image, audio, & video).
 # Plus shows support for streaming text.
-import re
 import json
 import gradio as gr
 
-from chat import chat
+from chat import rewrite, translate
 from text2image import generate
 
 
 def print_like_dislike(x: gr.LikeData):
     print(x.index, x.value, x.liked)
-
-
-def remove_img_tags(text):
-    pattern = r'<img[^>]*/>'
-    return re.sub(pattern, '', text)
 
 
 def add_message(history, message):
@@ -26,7 +20,8 @@ def add_message(history, message):
 
 
 def bot(history):
-    text_prompt = chat(messages=history)
+    rewrite_question = rewrite(messages=history)
+    text_prompt = translate(rewrite_question)
     json_content = generate(text_prompt)
     image_content = json.loads(json_content)["image"]
     response = f'{text_prompt}\n<img src="data:image/png;base64,{image_content}" width="512" height="512" alt="user upload image" />'
@@ -56,4 +51,4 @@ with gr.Blocks(fill_height=True) as demo:
     clear.click(lambda: None, None, chatbot, queue=False)
 
 if __name__ == "__main__":
-    demo.launch(share=True)
+    demo.launch()
