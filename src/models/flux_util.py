@@ -22,7 +22,7 @@ configs = {
     "flux-dev": ModelSpec(
         t5_path="/root/autodl-tmp/t5-v1_1-xxl",
         clip_path="/root/autodl-tmp/clip-vit-large-patch14",
-        ckpt_path="/root/autodl-tmp/flux.1-dev",
+        ckpt_path="/root/autodl-tmp/flux.1-dev/flux1-dev.safetensors",
         params=FluxParams(
             in_channels=64,
             vec_in_dim=768,
