@@ -1,0 +1,4 @@
+transformers
+fire
+einops
+pillow
