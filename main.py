@@ -24,7 +24,7 @@ def bot(history):
     text_prompt = translate(rewrite_question)
     json_content = generate(text_prompt)
     image_content = json.loads(json_content)["image"]
-    response = f'{text_prompt}\n<img src="data:image/png;base64,{image_content}" width="512" height="512" alt="user upload image" />'
+    response = f'{rewrite_question}\n<img src="data:image/png;base64,{image_content}" width="512" height="512" alt="user upload image" />'
     history[-1][1] = response
     return history
 
