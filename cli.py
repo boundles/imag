@@ -9,8 +9,8 @@ from einops import rearrange
 from fire import Fire
 from PIL import ExifTags, Image
 
-from src.models.sampling import denoise, get_noise, get_schedule, prepare, unpack
-from src.models.util import configs, load_ae, load_clip, load_flow_model, load_t5
+from src.models.flux_sampling import denoise, get_noise, get_schedule, prepare, unpack
+from src.models.flux_util import configs, load_ae, load_clip, load_flow_model, load_t5
 
 
 @dataclass
@@ -92,7 +92,7 @@ def parse_prompt(options: SamplingOptions) -> SamplingOptions | None:
 
 @torch.inference_mode()
 def main(
-        name: str = "flux-schnell",
+        name: str = "flux-dev",
         width: int = 1360,
         height: int = 768,
         seed: int | None = None,
@@ -150,8 +150,8 @@ def main(
             idx = 0
 
     # init all components
-    t5 = load_t5(torch_device, max_length=256 if name == "flux-schnell" else 512)
-    clip = load_clip(torch_device)
+    t5 = load_t5(name, torch_device, max_length=256 if name == "flux-schnell" else 512)
+    clip = load_clip(name, torch_device)
     model = load_flow_model(name, device="cpu" if offload else torch_device)
     ae = load_ae(name, device="cpu" if offload else torch_device)
 

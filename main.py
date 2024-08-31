@@ -3,8 +3,8 @@
 import json
 import gradio as gr
 
-from chat import rewrite, translate
-from text2image import generate
+from src.apis.chat import rewrite, translate
+from src.models.stability import generate
 
 
 def print_like_dislike(x: gr.LikeData):
