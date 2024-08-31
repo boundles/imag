@@ -1,7 +1,7 @@
 import requests
 
 
-def generate(prompt):
+def txt2image(prompt):
     response = requests.post(
         f"https://api.stability.ai/v2beta/stable-image/generate/ultra",
         headers={

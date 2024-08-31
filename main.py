@@ -3,8 +3,8 @@
 import json
 import gradio as gr
 
-from src.apis.chat import rewrite, translate
-from src.models.stability import generate
+from src.chat.utils import rewrite, translate
+from src.models.stability import txt2image
 
 
 def print_like_dislike(x: gr.LikeData):
@@ -22,7 +22,7 @@ def add_message(history, message):
 def bot(history):
     rewrite_question = rewrite(messages=history)
     text_prompt = translate(rewrite_question)
-    json_content = generate(text_prompt)
+    json_content = txt2image(text_prompt)
     image_content = json.loads(json_content)["image"]
     response = f'{rewrite_question}\n<img src="data:image/png;base64,{image_content}" width="512" height="512" alt="user upload image" />'
     history[-1][1] = response
