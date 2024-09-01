@@ -20,9 +20,9 @@ class ModelSpec:
 
 configs = {
     "flux-dev": ModelSpec(
-        t5_path="/root/autodl-tmp/t5-v1_1-xxl",
-        clip_path="/root/autodl-tmp/clip-vit-large-patch14",
-        ckpt_path="/root/autodl-tmp/flux.1-dev/flux1-dev.safetensors",
+        t5_path="/root/autodl-fs/t5-v1_1-xxl",
+        clip_path="/root/autodl-fs/clip-vit-large-patch14",
+        ckpt_path="/root/autodl-fs/flux.1-dev/flux1-dev.safetensors",
         params=FluxParams(
             in_channels=64,
             vec_in_dim=768,
@@ -37,7 +37,7 @@ configs = {
             qkv_bias=True,
             guidance_embed=True,
         ),
-        ae_path="/root/autodl-tmp/flux.1-dev/ae.safetensors",
+        ae_path="/root/autodl-fs/flux.1-dev/ae.safetensors",
         ae_params=AutoEncoderParams(
             resolution=256,
             in_channels=3,
