@@ -6,14 +6,14 @@ def readme():
     return content
 
 setuptools.setup(
-    name="imag",
+    name="aig",
     version="0.0.1",
     author="darrenwang",
     author_email="wangyang9113@gmail.com",
-    description="Image Auto Generator",
+    description="Autonomous Image Generator",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/boundles/mvsegmentation3d",
+    url="https://github.com/turing-vision/aig",
     classifiers=[
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
