@@ -64,7 +64,9 @@ def print_load_warning(missing: list[str], unexpected: list[str]) -> None:
         print(f"Got {len(unexpected)} unexpected keys:\n\t" + "\n\t".join(unexpected))
 
 
-def load_flow_model(name: str, device: str | torch.device = "cuda", hf_download: bool = True):
+def load_flow_model(
+    name: str, device: str | torch.device = "cuda", hf_download: bool = True
+):
     # Loading Flux
     print("Init model")
     ckpt_path = configs[name].ckpt_path
@@ -81,13 +83,19 @@ def load_flow_model(name: str, device: str | torch.device = "cuda", hf_download:
     return model
 
 
-def load_t5(name: str, device: str | torch.device = "cuda", max_length: int = 512) -> HFEmbedder:
+def load_t5(
+    name: str, device: str | torch.device = "cuda", max_length: int = 512
+) -> HFEmbedder:
     # max length 64, 128, 256 and 512 should work (if your sequence is short enough)
-    return HFEmbedder(configs[name].t5_path, max_length=max_length, torch_dtype=torch.bfloat16).to(device)
+    return HFEmbedder(
+        configs[name].t5_path, max_length=max_length, torch_dtype=torch.bfloat16
+    ).to(device)
 
 
 def load_clip(name: str, device: str | torch.device = "cuda") -> HFEmbedder:
-    return HFEmbedder(configs[name].clip_path, max_length=77, torch_dtype=torch.bfloat16).to(device)
+    return HFEmbedder(
+        configs[name].clip_path, max_length=77, torch_dtype=torch.bfloat16
+    ).to(device)
 
 
 def load_ae(name: str, device: str | torch.device = "cuda") -> AutoEncoder:

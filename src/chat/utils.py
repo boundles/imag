@@ -1,6 +1,8 @@
 from openai import OpenAI
 
-client = OpenAI(api_key="sk-4f887bb879814b9ba9c972f635bc568e", base_url="https://api.deepseek.com")
+client = OpenAI(
+    api_key="sk-4f887bb879814b9ba9c972f635bc568e", base_url="https://api.deepseek.com"
+)
 
 
 def rewrite(messages):
@@ -12,10 +14,14 @@ def rewrite(messages):
 
     response = client.chat.completions.create(
         model="deepseek-chat",
-        messages=[{"role": "system",
-                   "content": "你是一个AI助手，叫做小秘，可以根据用户的问题给出准确的回答。"},
-                  {"role": "user", "content": user_prompt}],
-        stream=False
+        messages=[
+            {
+                "role": "system",
+                "content": "你是一个AI助手，叫做小秘，可以根据用户的问题给出准确的回答。",
+            },
+            {"role": "user", "content": user_prompt},
+        ],
+        stream=False,
     )
 
     ans = response.choices[0].message.content
@@ -26,10 +32,14 @@ def translate(prompt):
     prompt = f"你的任务是从问题中提取关键信息，最后将关键信息文字转换成英文。无需返回中间过程语句，仅返回最终转换后的英文关键信息即可。\n\n问题:\n{prompt}\n\n英文关键信息:\n"
     response = client.chat.completions.create(
         model="deepseek-chat",
-        messages=[{"role": "system",
-                   "content": "你是一个AI助手，叫做小秘，可以根据用户的问题给出准确的回答。"},
-                  {"role": "user", "content": prompt}],
-        stream=False
+        messages=[
+            {
+                "role": "system",
+                "content": "你是一个AI助手，叫做小秘，可以根据用户的问题给出准确的回答。",
+            },
+            {"role": "user", "content": prompt},
+        ],
+        stream=False,
     )
 
     ans = response.choices[0].message.content

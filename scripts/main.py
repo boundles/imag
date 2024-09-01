@@ -38,11 +38,16 @@ with gr.Blocks(fill_height=True) as demo:
 
     clear = gr.Button("清除历史对话")
 
-    chat_input = gr.MultimodalTextbox(interactive=True,
-                                      file_count="multiple",
-                                      placeholder="Enter message or upload file...", show_label=False)
+    chat_input = gr.MultimodalTextbox(
+        interactive=True,
+        file_count="multiple",
+        placeholder="Enter message or upload file...",
+        show_label=False,
+    )
 
-    chat_msg = chat_input.submit(add_message, [chatbot, chat_input], [chatbot, chat_input])
+    chat_msg = chat_input.submit(
+        add_message, [chatbot, chat_input], [chatbot, chat_input]
+    )
     bot_msg = chat_msg.then(bot, chatbot, chatbot, api_name="bot_response")
     bot_msg.then(lambda: gr.MultimodalTextbox(interactive=True), None, [chat_input])
 

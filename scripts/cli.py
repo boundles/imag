@@ -24,7 +24,9 @@ class SamplingOptions:
 
 
 def parse_prompt(options: SamplingOptions) -> SamplingOptions | None:
-    user_question = "Next prompt (write /h for help, /q to quit and leave empty to repeat):\n"
+    user_question = (
+        "Next prompt (write /h for help, /q to quit and leave empty to repeat):\n"
+    )
     usage = (
         "Usage: Either write your prompt directly, leave this field empty "
         "to repeat the prompt or write a command starting with a slash:\n"
@@ -92,21 +94,21 @@ def parse_prompt(options: SamplingOptions) -> SamplingOptions | None:
 
 @torch.inference_mode()
 def main(
-        name: str = "flux-dev",
-        width: int = 1360,
-        height: int = 768,
-        seed: int | None = None,
-        prompt: str = (
-                "a photo of a forest with mist swirling around the tree trunks. The word "
-                '"FLUX" is painted over it in big, red brush strokes with visible texture'
-        ),
-        device: str = "cuda" if torch.cuda.is_available() else "cpu",
-        num_steps: int | None = None,
-        loop: bool = False,
-        guidance: float = 3.5,
-        offload: bool = False,
-        output_dir: str = "output",
-        add_sampling_metadata: bool = True,
+    name: str = "flux-dev",
+    width: int = 1360,
+    height: int = 768,
+    seed: int | None = None,
+    prompt: str = (
+        "a photo of a forest with mist swirling around the tree trunks. The word "
+        '"FLUX" is painted over it in big, red brush strokes with visible texture'
+    ),
+    device: str = "cuda" if torch.cuda.is_available() else "cpu",
+    num_steps: int | None = None,
+    loop: bool = False,
+    guidance: float = 3.5,
+    offload: bool = False,
+    output_dir: str = "output",
+    add_sampling_metadata: bool = True,
 ):
     """
     Sample the flux model. Either interactively (set `--loop`) or run for a
@@ -143,7 +145,11 @@ def main(
         os.makedirs(output_dir)
         idx = 0
     else:
-        fns = [fn for fn in iglob(output_name.format(idx="*")) if re.search(r"img_[0-9]+\.jpg$", fn)]
+        fns = [
+            fn
+            for fn in iglob(output_name.format(idx="*"))
+            if re.search(r"img_[0-9]+\.jpg$", fn)
+        ]
         if len(fns) > 0:
             idx = max(int(fn.split("_")[-1].split(".")[0]) for fn in fns) + 1
         else:
@@ -189,7 +195,9 @@ def main(
             torch.cuda.empty_cache()
             t5, clip = t5.to(torch_device), clip.to(torch_device)
         inp = prepare(t5, clip, x, prompt=opts.prompt)
-        timesteps = get_schedule(opts.num_steps, inp["img"].shape[1], shift=(name != "flux-schnell"))
+        timesteps = get_schedule(
+            opts.num_steps, inp["img"].shape[1], shift=(name != "flux-schnell")
+        )
 
         # offload TEs to CPU, load model to gpu
         if offload:

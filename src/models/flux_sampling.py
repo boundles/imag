@@ -2,20 +2,20 @@ import math
 from typing import Callable
 
 import torch
-from einops import rearrange, repeat
 from torch import Tensor
+from einops import rearrange, repeat
 
 from src.models.flux import Flux
 from src.modules.conditioner import HFEmbedder
 
 
 def get_noise(
-        num_samples: int,
-        height: int,
-        width: int,
-        device: torch.device,
-        dtype: torch.dtype,
-        seed: int,
+    num_samples: int,
+    height: int,
+    width: int,
+    device: torch.device,
+    dtype: torch.dtype,
+    seed: int,
 ):
     return torch.randn(
         num_samples,
@@ -29,7 +29,9 @@ def get_noise(
     )
 
 
-def prepare(t5: HFEmbedder, clip: HFEmbedder, img: Tensor, prompt: str | list[str]) -> dict[str, Tensor]:
+def prepare(
+    t5: HFEmbedder, clip: HFEmbedder, img: Tensor, prompt: str | list[str]
+) -> dict[str, Tensor]:
     bs, c, h, w = img.shape
     if bs == 1 and not isinstance(prompt, str):
         bs = len(prompt)
@@ -68,7 +70,7 @@ def time_shift(mu: float, sigma: float, t: Tensor):
 
 
 def get_lin_function(
-        x1: float = 256, y1: float = 0.5, x2: float = 4096, y2: float = 1.15
+    x1: float = 256, y1: float = 0.5, x2: float = 4096, y2: float = 1.15
 ) -> Callable[[float], float]:
     m = (y2 - y1) / (x2 - x1)
     b = y1 - m * x1
@@ -76,11 +78,11 @@ def get_lin_function(
 
 
 def get_schedule(
-        num_steps: int,
-        image_seq_len: int,
-        base_shift: float = 0.5,
-        max_shift: float = 1.15,
-        shift: bool = True,
+    num_steps: int,
+    image_seq_len: int,
+    base_shift: float = 0.5,
+    max_shift: float = 1.15,
+    shift: bool = True,
 ) -> list[float]:
     # extra step for zero
     timesteps = torch.linspace(1, 0, num_steps + 1)
@@ -95,19 +97,21 @@ def get_schedule(
 
 
 def denoise(
-        model: Flux,
-        # model input
-        img: Tensor,
-        img_ids: Tensor,
-        txt: Tensor,
-        txt_ids: Tensor,
-        vec: Tensor,
-        # sampling parameters
-        timesteps: list[float],
-        guidance: float = 4.0,
+    model: Flux,
+    # model input
+    img: Tensor,
+    img_ids: Tensor,
+    txt: Tensor,
+    txt_ids: Tensor,
+    vec: Tensor,
+    # sampling parameters
+    timesteps: list[float],
+    guidance: float = 4.0,
 ):
     # this is ignored for schnell
-    guidance_vec = torch.full((img.shape[0],), guidance, device=img.device, dtype=img.dtype)
+    guidance_vec = torch.full(
+        (img.shape[0],), guidance, device=img.device, dtype=img.dtype
+    )
     for t_curr, t_prev in zip(timesteps[:-1], timesteps[1:]):
         t_vec = torch.full((img.shape[0],), t_curr, dtype=img.dtype, device=img.device)
         pred = model(
