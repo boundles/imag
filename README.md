@@ -1,1 +1,1 @@
-# Image Autonomous Generator
+# Autonomous Image Generator
